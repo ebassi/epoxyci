@@ -1,9 +1,9 @@
-FROM debian:stretch
+FROM debian:stretch-slim
 MAINTAINER Emmanuele Bassi <ebassi@gmail.com>
 
-RUN apt-get update -qq && apt-get install -qq -y \
+RUN apt-get update -qq && apt-get install --no-install-recommends -qq -y \
+        clang \
         gcc \
-        git-core \
         libc6-dev \
         libgl1-mesa-dev \
         libegl1-mesa-dev \
@@ -11,19 +11,18 @@ RUN apt-get update -qq && apt-get install -qq -y \
         libgles2-mesa-dev \
         libgl1-mesa-dri \
         locales \
-        make \
         ninja-build \
         pkg-config \
-        python \
         python3 \
         python3-pip \
+        python3-setuptools \
         xvfb
+
+RUN rm -rf /usr/share/doc/* /usr/share/man/*
 
 RUN locale-gen C.UTF-8 && /usr/sbin/update-locale LANG=C.UTF-8
 
-ENV LANG C.UTF-8
-ENV LANGUAGE C.UTF-8
-ENV LC_ALL C.UTF-8
+ENV LANG=C.UTF-8 LANGUAGE=C.UTF-8 LC_ALL=C.UTF-8
 
 RUN pip3 install meson
 
