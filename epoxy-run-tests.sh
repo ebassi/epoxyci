@@ -8,17 +8,10 @@ xvfb=$!
 
 export DISPLAY=:99
 
-if [[ -n "$TRAVIS" ]]; then
-  git clone https://github.com/anholt/libepoxy /root/libepoxy
-  cd /root/libepoxy
-fi
+mkdir _build
 
-mkdir _build && cd _build
-
-meson --prefix /usr "$@" .. || exit $?
-ninja || exit $?
-ninja test || exit $?
-
-cd ..
+meson --prefix /usr "$@" _build . || exit $?
+ninja -C _build || exit $?
+ninja -C _build test || exit $?
 
 rm -rf _build
